@@ -1,3 +1,17 @@
+# 6.00.2x Problem Set 2: Simulating robots
+
+import math
+import random
+
+import ps2_visualize
+import pylab
+
+# For Python 2.7:
+from ps2_verify_movement27 import testRobotMovement
+
+# If you get a "Bad magic number" ImportError, you are not using 
+# Python 2.7 and using most likely Python 2.6:
+
 # Enter your code for RectangularRoom in this box
 # 6.00.2x Problem Set 2: Simulating robots
 class RectangularRoom(object):
@@ -158,4 +172,24 @@ class Robot(object):
         been cleaned.
         """
         raise NotImplementedError # don't change this!
+
+# === Problem 2
+class StandardRobot(Robot):
+    """
+    A StandardRobot is a Robot with the standard movement strategy.
+
+    At each time-step, a StandardRobot attempts to move in its current
+    direction; when it would hit a wall, it *instead* chooses a new direction randomly.
+    """
+    def updatePositionAndClean(self):
+        """
+        Simulate the raise passage of a single time-step.
+
+        Move the robot to a new position and mark the tile it is on as having been cleaned.
+        """
+        self.position = position.getNewPosition()
+	cleanTileAtPosition(position)
+
+# Uncomment this line to see your implementation of StandardRobot in action!
+##testRobotMovement(StandardRobot, RectangularRoom)
 
