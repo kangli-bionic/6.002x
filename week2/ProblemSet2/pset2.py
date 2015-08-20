@@ -246,3 +246,47 @@ class StandardRobot(Robot):
 # Uncomment this line to see your implementation of StandardRobot in action!
 # testRobotMovement(StandardRobot, RectangularRoom)
 
+# === Problem 3
+def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
+                  robot_type):
+    """
+    Runs NUM_TRIALS trials of the simulation and returns the mean number of
+    time-steps needed to clean the fraction MIN_COVERAGE of the room.
+
+    The simulation is run with NUM_ROBOTS robots of type ROBOT_TYPE, each with
+    speed SPEED, in a room of dimensions WIDTH x HEIGHT.
+
+    num_robots: an int (num_robots > 0)
+    speed: a float (speed > 0)
+    width: an int (width > 0)
+    height: an int (height > 0)
+    min_coverage: a float (0 <= min_coverage <= 1.0)
+    num_trials: an int (num_trials > 0)
+    robot_type: class of robot to be instantiated (e.g. StandardRobot or
+                RandomWalkRobot)
+    """
+    
+    trialsList = []
+    #run num_trials amount of trials
+    for trial in range(num_trials):
+    #create list of robots    
+    #create room
+        room = RectangularRoom(width,height)
+    #create list of robots that will be cleaning the room  
+        botList = []
+        for n in range(num_robots):
+            botList.append(robot_type(room,speed))
+
+    #create step counter
+        steps = 0        
+    #while room is not clean, clean room    
+        while (1.0*room.getNumCleanedTiles()/room.getNumTiles() <= min_coverage):
+    # for each robot clean the position of the robot
+            for bot in botList:
+                bot.updatePositionAndClean()
+            steps +=1
+        trialsList.append(steps)
+    return float(sum(trialsList)/len(trialsList))        
+
+# Uncomment this line to see how much your simulation takes on average
+print  runSimulation(1, 1.0, 10, 10, 0.9, 30, StandardRobot)
