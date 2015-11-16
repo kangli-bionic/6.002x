@@ -28,7 +28,7 @@ class SimpleVirus(object):
     """
     Representation of a simple virus (does not model drug effects/resistance).
     """
-    def __init__(self, maxBirthProb, clearProb):
+    def __init__(maxBirthProb, clearProb):
         """
         Initialize a SimpleVirus instance, saves all parameters as attributes
         of the instance.        
@@ -86,7 +86,7 @@ class SimpleVirus(object):
 
         
         if random.random() <= self.maxBirthProb * (1-popDensity):
-            return SimpleVirus(object)
+            return SimpleVirus(self.maxBirthProb, self.clearProb)
         else:
             raise NoChildException('No Reproduction')
 
@@ -153,8 +153,25 @@ class Patient(object):
         returns: The total virus population at the end of the update (an
         integer)
         """
+        # Determine whether each virus survives and update list
+        currentVirus = self.getViruses()
+        currentVirus[:] = [virus for virus in currentVirus if not virus.doesClear()]
 
-        # TODO
+        # Calculate population density
+        popDensity = float(len(currentVirus)/self.maxPop)
+
+        # Determine whether each particle should reproduce and add offspring
+        newViruses = []
+        if popDensity < 1:
+            for virus in currentVirus:
+                try:
+                    newViruses.append(virus.reproduce(popDensity))
+                except NoChildException:
+                    continue
+        self.viruses = self.viruses + newViruses
+
+        else:
+        self.getTotalPop()
 
 
 
